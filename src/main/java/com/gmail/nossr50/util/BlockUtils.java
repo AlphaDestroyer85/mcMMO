@@ -13,6 +13,7 @@ import org.bukkit.material.NetherWarts;
 import org.bukkit.material.SmoothBrick;
 
 import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.salvage.Salvage;
 
 public final class BlockUtils {
     private BlockUtils() {}
@@ -296,7 +297,7 @@ public final class BlockUtils {
     public static boolean isMcMMOAnvil(BlockState blockState) {
         Material type = blockState.getType();
 
-        return type == Repair.repairAnvilMaterial || type == Repair.salvageAnvilMaterial;
+        return type == Repair.anvilMaterial || type == Salvage.anvilMaterial;
     }
 
     /**
