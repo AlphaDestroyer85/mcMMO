@@ -57,8 +57,8 @@ public class McmmoCommand implements CommandExecutor {
     private void displayPartyCommands(CommandSender sender) {
         if (Permissions.party(sender)) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
-            sender.sendMessage(" /party create <" + LocaleLoader.getString("Commands.Usage.PartyName") + "> " + LocaleLoader.getString("Commands.Party1"));
-            sender.sendMessage(" /party join <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party2"));
+            sender.sendMessage(" /party create <" + LocaleLoader.getString("Commands.Usage.PartyName") + "> " + LocaleLoader.getString("Commands.Party.1"));
+            sender.sendMessage(" /party join <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.2"));
             sender.sendMessage(" /party quit " + LocaleLoader.getString("Commands.Party.Quit"));
 
             if (Permissions.partyChat(sender)) {

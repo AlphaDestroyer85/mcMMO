@@ -318,9 +318,44 @@ public final class PartyManager {
             return;
         }
 
-        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", invite.getName()));
+        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Party.Invite.Accepted", invite.getName()));
         mcMMOPlayer.removePartyInvite();
         addToParty(mcMMOPlayer, invite);
+    }
+
+    /**
+     * Accept a party alliance invitation
+     *
+     * @param mcMMOPlayer The player who accepts the alliance invite
+     */
+    public static void acceptAllianceInvite(McMMOPlayer mcMMOPlayer) {
+        Party invite = mcMMOPlayer.getPartyAllianceInvite();
+
+        // Check if the party still exists, it might have been disbanded
+        Player player = mcMMOPlayer.getPlayer();
+
+        if (!parties.contains(invite)) {
+            player.sendMessage(LocaleLoader.getString("Party.Disband"));
+            return;
+        }
+
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Invite.Accepted", invite.getName()));
+        mcMMOPlayer.removePartyAllianceInvite();
+
+        createAlliance(mcMMOPlayer.getParty(), invite);
+    }
+
+    public static void createAlliance(Party firstParty, Party secondParty) {
+        firstParty.setAlly(secondParty);
+        secondParty.setAlly(firstParty);
+
+        for (Player member : firstParty.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Party.Alliance", secondParty));
+        }
+
+        for (Player member : secondParty.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Party.Alliance", firstParty));
+        }
     }
 
     /**

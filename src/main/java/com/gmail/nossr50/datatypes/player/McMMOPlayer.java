@@ -63,6 +63,7 @@ public class McMMOPlayer {
 
     private Party   party;
     private Party   invite;
+    private Party   allianceInvite;
     private int     itemShareModifier;
 
     private PartyTeleportRecord ptpRecord;
@@ -627,6 +628,22 @@ public class McMMOPlayer {
 
     public PartyTeleportRecord getPartyTeleportRecord() {
         return ptpRecord;
+    }
+
+    public void setPartyAllianceInvite(Party allianceInvite) {
+        this.allianceInvite = allianceInvite;
+    }
+
+    public Party getPartyAllianceInvite() {
+        return allianceInvite;
+    }
+
+    public boolean hasPartyAllianceInvite() {
+        return (allianceInvite != null);
+    }
+
+    public void removePartyAllianceInvite() {
+        allianceInvite = null;
     }
 
     public int getItemShareModifier() {
