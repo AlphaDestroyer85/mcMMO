@@ -53,7 +53,7 @@ public class SalvageCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
         if (canAdvancedSalvage) {
             if (skillValue < Salvage.advancedSalvageUnlockLevel) {
-                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Salvage.Ability.Locked.0"), Salvage.advancedSalvageUnlockLevel));
+                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Salvage.Ability.Locked.0", Salvage.advancedSalvageUnlockLevel)));
             }
             else {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Ability.Bonus.0"), LocaleLoader.getString("Salvage.Ability.Bonus.1")));
@@ -63,7 +63,7 @@ public class SalvageCommand extends SkillCommand {
         if (canArcaneSalvage) {
             SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
 
-            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Arcane.Rank"), salvageManager.getArcaneSalvageRank()));
+            messages.add(LocaleLoader.getString("Salvage.Arcane.Rank", salvageManager.getArcaneSalvageRank(), Salvage.Tier.EIGHT.toNumerical()));
 
             if (Salvage.arcaneSalvageEnchantLoss) {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Salvage.Arcane.ExtractFull"), salvageManager.getExtractFullEnchantChance()));

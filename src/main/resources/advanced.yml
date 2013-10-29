@@ -328,39 +328,51 @@ Skills:
     #  Settings for Salvage
     ###
     Salvage:
+        # MaxPercentage: Maximum percentage of materials to be returned when Salvaging
+        # MaxPercentageLevel: On this level, the Salvage percentage will be <MaxPercentage>
+        MaxPercentage: 100.0
+        MaxPercentageLevel: 1000
+
         # AdvancedSalvage_UnlockLevel: The level at which Advance Salvage become available
-        AdvancedSalvage_UnlockLevel: 350
+        AdvancedSalvage:
+            UnlockLevel: 350
 
-        # ArcaneSalvage_EnchantLossEnabled: When salvaging enchanted items, the enchants may be lost
-        # ArcaneSalvage_EnchantDowngradeEnabled: When salvaging enchanted items, the enchants may be downgraded
-        ArcaneSalvage_EnchantLossEnabled: true
-        ArcaneSalvage_EnchantDowngradeEnabled: true
+        ArcaneSalvage:
+            # EnchantLossEnabled: When salvaging enchanted items, the enchants may be lost
+            # EnchantDowngradeEnabled: When salvaging enchanted items, the enchants may be downgraded
+            EnchantLossEnabled: true
+            EnchantDowngradeEnabled: true
+            Rank_Levels:
+                Rank_1: 125
+                Rank_2: 250
+                Rank_3: 375
+                Rank_4: 500
+                Rank_5: 625
+                Rank_6: 750
+                Rank_7: 875
+                Rank_8: 1000
 
-        # ArcaneSalvage_Rank: ArcaneSalvage rank unlocks
-        ArcaneSalvage_Rank1: 200
-        ArcaneSalvage_Rank2: 400
-        ArcaneSalvage_Rank3: 600
-        ArcaneSalvage_Rank4: 800
-        ArcaneSalvage_Rank5: 1000
+            # ExtractFullEnchant: Chance to extract the full enchant at each ArcaneSalvage rank
+            ExtractFullEnchant:
+                Rank_1: 2.5
+                Rank_2: 5.0
+                Rank_3: 7.5
+                Rank_4: 10.0
+                Rank_5: 12.5
+                Rank_6: 17.5
+                Rank_7: 25.0
+                Rank_8: 32.5
 
-        # ArcaneSalvage_ExtractFullEnchant: Chance to extract the full enchant at each ArcaneSalvage rank
-        ArcaneSalvage_ExtractFullEnchantRank1: 2.5
-        ArcaneSalvage_ExtractFullEnchantRank2: 10.0
-        ArcaneSalvage_ExtractFullEnchantRank3: 17.5
-        ArcaneSalvage_ExtractFullEnchantRank4: 25.0
-        ArcaneSalvage_ExtractFullEnchantRank5: 32.5
-
-        # ArcaneSalvage_ExtractPartialEnchant: Chance to extract the partial enchant at each ArcaneSalvage rank
-        ArcaneSalvage_ExtractPartialEnchantRank1: 7.5
-        ArcaneSalvage_ExtractPartialEnchantRank2: 10.0
-        ArcaneSalvage_ExtractPartialEnchantRank3: 12.5
-        ArcaneSalvage_ExtractPartialEnchantRank4: 15.0
-        ArcaneSalvage_ExtractPartialEnchantRank5: 17.5
-
-        # Salvage_MaxPercentage: Maximum percent of materials to be returned when Salvaging
-        # Salvage_MaxPercentageLevel: On this level, the Salvage percentage will be Salvage_MaxPercentage
-        Salvage_MaxPercentage: 100.0
-        Salvage_MaxPercentageLevel: 1000
+            # ExtractPartialEnchant: Chance to extract the partial enchant at each ArcaneSalvage rank
+            ExtractPartialEnchant:
+                Rank_1: 2.0
+                Rank_2: 2.5
+                Rank_3: 5.0
+                Rank_4: 7.5
+                Rank_5: 10.0
+                Rank_6: 12.5
+                Rank_7: 15.0
+                Rank_8: 17.5
     #
     #  Settings for Smelting
     ###

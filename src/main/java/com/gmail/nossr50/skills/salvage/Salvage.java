@@ -10,27 +10,15 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class Salvage {
     // The order of the values is extremely important, a few methods depend on it to work properly
-    protected enum Tier {
-        FIVE(5) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank5Level(); }
-            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank5(); }
-            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank5(); }},
-        FOUR(4) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank4Level(); }
-            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank4(); }
-            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank4(); }},
-        THREE(3) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank3Level(); }
-            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank3(); }
-            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank3(); }},
-        TWO(2) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank2Level(); }
-            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank2(); }
-            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank2(); }},
-        ONE(1) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneSalvageRank1Level(); }
-            @Override public double getExtractFullEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsRank1(); }
-            @Override public double getExtractPartialEnchantChance() { return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsRank1(); }};
+    public enum Tier {
+        EIGHT(8),
+        SEVEN(7),
+        SIX(6),
+        FIVE(5),
+        FOUR(4),
+        THREE(3),
+        TWO(2),
+        ONE(1);
 
         int numerical;
 
@@ -42,9 +30,17 @@ public class Salvage {
             return numerical;
         }
 
-        abstract protected int getLevel();
-        abstract protected double getExtractFullEnchantChance();
-        abstract protected double getExtractPartialEnchantChance();
+        protected int getLevel() {
+            return AdvancedConfig.getInstance().getArcaneSalvageRankLevel(this);
+        }
+
+        protected double getExtractFullEnchantChance() {
+            return AdvancedConfig.getInstance().getArcaneSalvageExtractFullEnchantsChance(this);
+        }
+
+        protected double getExtractPartialEnchantChance() {
+            return AdvancedConfig.getInstance().getArcaneSalvageExtractPartialEnchantsChance(this);
+        }
     }
 
     public static Material anvilMaterial = Config.getInstance().getSalvageAnvilMaterial();
