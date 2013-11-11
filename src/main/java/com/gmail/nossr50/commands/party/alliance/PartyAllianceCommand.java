@@ -12,6 +12,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -42,6 +44,16 @@ public class PartyAllianceCommand implements TabExecutor {
             case 1:
             case 2:
             case 3:
+                player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+                playerParty = mcMMOPlayer.getParty();
+
+                if (playerParty.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ALLIANCE)) {
+                    sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.3"));
+                    return true;
+                }
+
                 if (args[1].equalsIgnoreCase("invite")) {
                     return partyAllianceInviteCommand.onCommand(sender, command, label, args);
                 }
@@ -49,11 +61,6 @@ public class PartyAllianceCommand implements TabExecutor {
                 if (args[1].equalsIgnoreCase("accept")) {
                     return partyAllianceAcceptCommand.onCommand(sender, command, label, args);
                 }
-
-                player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-                playerParty = mcMMOPlayer.getParty();
 
                 if (playerParty.getAlly() == null) {
                     printUsage();
