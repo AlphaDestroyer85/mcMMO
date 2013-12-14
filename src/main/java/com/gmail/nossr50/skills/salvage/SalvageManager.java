@@ -14,6 +14,7 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -35,20 +36,23 @@ public class SalvageManager extends SkillManager {
 
     /**
      * Handles notifications for placing an anvil.
-     *
-     * @param anvilType The {@link Material} of the anvil block
      */
-    public void placedAnvilCheck(Material anvilType) {
+    public void placedAnvilCheck() {
         Player player = getPlayer();
 
-        if (getPlacedAnvil(anvilType)) {
+        if (getPlacedAnvil()) {
             return;
         }
 
-        player.sendMessage(LocaleLoader.getString("Salvage.Listener.Anvil"));
+        if (Config.getInstance().getSalvageAnvilMessagesEnabled()) {
+            player.sendMessage(LocaleLoader.getString("Salvage.Listener.Anvil"));
+        }
 
-        player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        togglePlacedAnvil(anvilType);
+        if (Config.getInstance().getSalvageAnvilPlaceSoundsEnabled()) {
+            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        }
+
+        togglePlacedAnvil();
     }
 
     public void handleSalvage(Location location, ItemStack item) {
@@ -114,8 +118,12 @@ public class SalvageManager extends SkillManager {
 
         Misc.dropItems(location, new MaterialData(salvageMaterial, salvageMaterialMetadata).toItemStack(1), salvageableAmount);
 
-        player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0F, 1.0F);
+        // BWONG BWONG BWONG - CLUNK!
+        if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
+            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0F, 1.0F);
+        }
+
         player.sendMessage(LocaleLoader.getString("Salvage.Skills.Success"));
     }
 
@@ -206,45 +214,56 @@ public class SalvageManager extends SkillManager {
         return book;
     }
 
+    /**
+     * Check if the player has tried to use an Anvil before.
+     * @param actualize
+     *
+     * @return true if the player has confirmed using an Anvil
+     */
+    public boolean checkConfirmation(boolean actualize) {
+        Player player = getPlayer();
+        long lastUse = getLastAnvilUse();
+
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getSalvageConfirmRequired()) {
+            return true;
+        }
+
+        if (!actualize) {
+            return false;
+        }
+
+        actualizeLastAnvilUse();
+
+        player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name")));
+
+        return false;
+    }
+
     /*
      * Salvage Anvil Placement
      */
 
-    public boolean getPlacedAnvil(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            return placedAnvil;
-        }
-
-        return true;
+    public boolean getPlacedAnvil() {
+        return placedAnvil;
     }
 
-    public void togglePlacedAnvil(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            placedAnvil = !placedAnvil;
-        }
+    public void togglePlacedAnvil() {
+        placedAnvil = !placedAnvil;
     }
 
     /*
      * Salvage Anvil Usage
      */
 
-    public int getLastAnvilUse(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            return lastClick;
-        }
-
-        return 0;
+    public int getLastAnvilUse() {
+        return lastClick;
     }
 
-    public void setLastAnvilUse(Material anvilType, int value) {
-        if (anvilType == Salvage.anvilMaterial) {
-            lastClick = value;
-        }
+    public void setLastAnvilUse(int value) {
+        lastClick = value;
     }
 
-    public void actualizeLastAnvilUse(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            lastClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-        }
+    public void actualizeLastAnvilUse() {
+        lastClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 }
