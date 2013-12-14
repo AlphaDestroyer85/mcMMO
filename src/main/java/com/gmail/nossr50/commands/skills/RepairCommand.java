@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.RepairAndSalvageMaterialType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -76,13 +77,13 @@ public class RepairCommand extends SkillCommand {
         canSuperRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SUPER_REPAIR);
         canMasterRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.REPAIR_MASTERY);
         canArcaneForge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_FORGING);
-        canRepairDiamond = Permissions.repairDiamond(player);
-        canRepairGold = Permissions.repairGold(player);
-        canRepairIron = Permissions.repairIron(player);
-        canRepairStone = Permissions.repairStone(player);
-        canRepairString = Permissions.repairString(player);
-        canRepairLeather = Permissions.repairLeather(player);
-        canRepairWood = Permissions.repairWood(player);
+        canRepairDiamond = Permissions.repairMaterialType(player, RepairAndSalvageMaterialType.DIAMOND);
+        canRepairGold = Permissions.repairMaterialType(player, RepairAndSalvageMaterialType.GOLD);
+        canRepairIron = Permissions.repairMaterialType(player, RepairAndSalvageMaterialType.IRON);
+        canRepairStone = Permissions.repairMaterialType(player, RepairAndSalvageMaterialType.STONE);
+        canRepairString = Permissions.repairMaterialType(player, RepairAndSalvageMaterialType.STRING);
+        canRepairLeather = Permissions.repairMaterialType(player, RepairAndSalvageMaterialType.LEATHER);
+        canRepairWood = Permissions.repairMaterialType(player, RepairAndSalvageMaterialType.WOOD);
         arcaneBypass = Permissions.arcaneBypass(player);
     }
 

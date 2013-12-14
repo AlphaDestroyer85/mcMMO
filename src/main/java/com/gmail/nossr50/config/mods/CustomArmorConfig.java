@@ -9,8 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.skills.repair.repairables.RepairItemType;
-import com.gmail.nossr50.skills.repair.repairables.RepairMaterialType;
+import com.gmail.nossr50.datatypes.RepairAndSalvageItemType;
+import com.gmail.nossr50.datatypes.RepairAndSalvageMaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -111,7 +111,7 @@ public class CustomArmorConfig extends ConfigLoader {
                     durability = (short) config.getInt(armorType + "." + armorName + ".Durability", 70);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, 0, repairQuantity, durability, RepairItemType.ARMOR, RepairMaterialType.OTHER, 1.0));
+                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, 0, repairQuantity, durability, RepairAndSalvageItemType.ARMOR, RepairAndSalvageMaterialType.OTHER, 1.0));
             }
 
             materialList.add(armorMaterial);

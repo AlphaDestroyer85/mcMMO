@@ -11,14 +11,19 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.material.MaterialData;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.Salvage.Tier;
+import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
@@ -53,12 +58,38 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
+        Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
+
+        // Permissions checks on material and item types
+        if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            return;
+        }
+
+        if (!Permissions.salvageMaterialType(player, salvageable.getSalvageMaterialType())) {
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            return;
+        }
+
+        int skillLevel = getSkillLevel();
+        int minimumSalvageableLevel = salvageable.getMinimumLevel();
+
+        // Level check
+        if (skillLevel < minimumSalvageableLevel) {
+            player.sendMessage(LocaleLoader.getString("Salvage.Skills.Adept", minimumSalvageableLevel, StringUtils.getPrettyItemString(item.getType())));
+            return;
+        }
+
         if (item.getDurability() != 0 && (getSkillLevel() < Salvage.advancedSalvageUnlockLevel || !Permissions.advancedSalvage(player))) {
             player.sendMessage(LocaleLoader.getString("Salvage.Skills.AdeptDamaged"));
             return;
         }
 
-        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), item.getType().getMaxDurability(), Salvage.getSalvagedAmount(item));
+        Material salvageMaterial = salvageable.getSalvageMaterial();
+        byte salvageMaterialMetadata = salvageable.getSalvageMaterialMetadata();
+        int baseSalvageAmount = SkillUtils.getRepairAndSalvageQuantities(item, salvageable.getSalvageMaterial(), (byte) -1);
+
+        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageMaterial.getMaxDurability(), baseSalvageAmount);
 
         if (salvageableAmount == 0) {
             player.sendMessage(LocaleLoader.getString("Salvage.Skills.TooDamaged"));
@@ -81,10 +112,11 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        Misc.dropItems(location, new ItemStack(Salvage.getSalvagedItem(item)), salvageableAmount);
+        Misc.dropItems(location, new MaterialData(salvageMaterial, salvageMaterialMetadata).toItemStack(1), salvageableAmount);
 
         player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
+        player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0F, 1.0F);
+        player.sendMessage(LocaleLoader.getString("Salvage.Skills.Success"));
     }
 
     /**

@@ -9,9 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.skills.repair.Repair;
-import com.gmail.nossr50.skills.repair.repairables.RepairItemType;
-import com.gmail.nossr50.skills.repair.repairables.RepairMaterialType;
+import com.gmail.nossr50.datatypes.RepairAndSalvageItemType;
+import com.gmail.nossr50.datatypes.RepairAndSalvageMaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
@@ -49,37 +48,37 @@ public class RepairConfig extends ConfigLoader {
             }
 
             // Repair Material Type
-            RepairMaterialType repairMaterialType = RepairMaterialType.OTHER;
+            RepairAndSalvageMaterialType repairMaterialType = RepairAndSalvageMaterialType.OTHER;
             String repairMaterialTypeString = config.getString("Repairables." + key + ".MaterialType", "OTHER");
 
             if (!config.contains("Repairables." + key + ".MaterialType") && itemMaterial != null) {
                 ItemStack repairItem = new ItemStack(itemMaterial);
 
                 if (ItemUtils.isWoodTool(repairItem)) {
-                    repairMaterialType = RepairMaterialType.WOOD;
+                    repairMaterialType = RepairAndSalvageMaterialType.WOOD;
                 }
                 else if (ItemUtils.isStoneTool(repairItem)) {
-                    repairMaterialType = RepairMaterialType.STONE;
+                    repairMaterialType = RepairAndSalvageMaterialType.STONE;
                 }
                 else if (ItemUtils.isStringTool(repairItem)) {
-                    repairMaterialType = RepairMaterialType.STRING;
+                    repairMaterialType = RepairAndSalvageMaterialType.STRING;
                 }
                 else if (ItemUtils.isLeatherArmor(repairItem)) {
-                    repairMaterialType = RepairMaterialType.LEATHER;
+                    repairMaterialType = RepairAndSalvageMaterialType.LEATHER;
                 }
                 else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
-                    repairMaterialType = RepairMaterialType.IRON;
+                    repairMaterialType = RepairAndSalvageMaterialType.IRON;
                 }
                 else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
-                    repairMaterialType = RepairMaterialType.GOLD;
+                    repairMaterialType = RepairAndSalvageMaterialType.GOLD;
                 }
                 else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
-                    repairMaterialType = RepairMaterialType.DIAMOND;
+                    repairMaterialType = RepairAndSalvageMaterialType.DIAMOND;
                 }
             }
             else {
                 try {
-                    repairMaterialType = RepairMaterialType.valueOf(repairMaterialTypeString);
+                    repairMaterialType = RepairAndSalvageMaterialType.valueOf(repairMaterialTypeString);
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid MaterialType of " + repairMaterialTypeString);
@@ -88,7 +87,7 @@ public class RepairConfig extends ConfigLoader {
 
             // Repair Material
             String repairMaterialName = config.getString("Repairables." + key + ".RepairMaterial");
-            Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultRepairMaterial() : Material.matchMaterial(repairMaterialName));
+            Material repairMaterial = (repairMaterialName == null ? repairMaterialType.getDefaultMaterial() : Material.matchMaterial(repairMaterialName));
 
             if (repairMaterial == null) {
                 reason.add(key + " has an invalid repair material: " + repairMaterialName);
@@ -102,22 +101,22 @@ public class RepairConfig extends ConfigLoader {
             }
 
             // Item Type
-            RepairItemType repairItemType = RepairItemType.OTHER;
+            RepairAndSalvageItemType repairItemType = RepairAndSalvageItemType.OTHER;
             String repairItemTypeString = config.getString("Repairables." + key + ".ItemType", "OTHER");
 
             if (!config.contains("Repairables." + key + ".ItemType") && itemMaterial != null) {
                 ItemStack repairItem = new ItemStack(itemMaterial);
 
                 if (ItemUtils.isMinecraftTool(repairItem)) {
-                    repairItemType = RepairItemType.TOOL;
+                    repairItemType = RepairAndSalvageItemType.TOOL;
                 }
                 else if (ItemUtils.isArmor(repairItem)) {
-                    repairItemType = RepairItemType.ARMOR;
+                    repairItemType = RepairAndSalvageItemType.ARMOR;
                 }
             }
             else {
                 try {
-                    repairItemType = RepairItemType.valueOf(repairItemTypeString);
+                    repairItemType = RepairAndSalvageItemType.valueOf(repairItemTypeString);
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add(key + " has an invalid ItemType of " + repairItemTypeString);

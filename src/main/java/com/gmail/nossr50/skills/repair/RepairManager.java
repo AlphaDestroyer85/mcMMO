@@ -62,12 +62,12 @@ public class RepairManager extends SkillManager {
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
         // Permissions checks on material and item types
-        if (!repairable.getRepairItemType().getPermissions(player)) {
+        if (!Permissions.repairMaterialType(player, repairable.getRepairMaterialType())) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
 
-        if (!repairable.getRepairMaterialType().getPermissions(player)) {
+        if (!Permissions.repairMaterialType(player, repairable.getRepairMaterialType())) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }

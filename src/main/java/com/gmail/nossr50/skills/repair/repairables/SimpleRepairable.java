@@ -2,17 +2,20 @@ package com.gmail.nossr50.skills.repair.repairables;
 
 import org.bukkit.Material;
 
+import com.gmail.nossr50.datatypes.RepairAndSalvageItemType;
+import com.gmail.nossr50.datatypes.RepairAndSalvageMaterialType;
+
 
 public class SimpleRepairable implements Repairable {
     private final Material itemMaterial, repairMaterial;
     private final int minimumQuantity, minimumLevel;
     private final short maximumDurability, baseRepairDurability;
     private final byte repairMetadata;
-    private final RepairItemType repairItemType;
-    private final RepairMaterialType repairMaterialType;
+    private final RepairAndSalvageItemType repairItemType;
+    private final RepairAndSalvageMaterialType repairMaterialType;
     private final double xpMultiplier;
 
-    protected SimpleRepairable(Material type, Material repairMaterial, byte repairMetadata, int minimumLevel, int minimumQuantity, short maximumDurability, RepairItemType repairItemType, RepairMaterialType repairMaterialType, double xpMultiplier) {
+    protected SimpleRepairable(Material type, Material repairMaterial, byte repairMetadata, int minimumLevel, int minimumQuantity, short maximumDurability, RepairAndSalvageItemType repairItemType, RepairAndSalvageMaterialType repairMaterialType, double xpMultiplier) {
         this.itemMaterial = type;
         this.repairMaterial = repairMaterial;
         this.repairMetadata = repairMetadata;
@@ -41,12 +44,12 @@ public class SimpleRepairable implements Repairable {
     }
 
     @Override
-    public RepairItemType getRepairItemType() {
+    public RepairAndSalvageItemType getRepairItemType() {
         return repairItemType;
     }
 
     @Override
-    public RepairMaterialType getRepairMaterialType() {
+    public RepairAndSalvageMaterialType getRepairMaterialType() {
         return repairMaterialType;
     }
 

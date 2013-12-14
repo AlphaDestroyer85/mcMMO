@@ -19,6 +19,7 @@ import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.repair.RepairConfigManager;
+import com.gmail.nossr50.config.salvage.SalvageConfigManager;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -42,6 +43,9 @@ import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
+import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
+import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
+import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.Misc;
@@ -60,10 +64,11 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */
-    private static ChunkManager      placeStore;
-    private static RepairableManager repairableManager;
-    private static DatabaseManager   databaseManager;
-    private static FormulaManager    formulaManager;
+    private static ChunkManager       placeStore;
+    private static RepairableManager  repairableManager;
+    private static SalvageableManager salvageableManager;
+    private static DatabaseManager    databaseManager;
+    private static FormulaManager     formulaManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -277,6 +282,10 @@ public class mcMMO extends JavaPlugin {
         return repairableManager;
     }
 
+    public static SalvageableManager getSalvageableManager() {
+        return salvageableManager;
+    }
+
     public static DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
@@ -353,6 +362,7 @@ public class mcMMO extends JavaPlugin {
         new ChildConfig();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
+        List<Salvageable> salvageables = new ArrayList<Salvageable>();
 
         if (Config.getInstance().getToolModsEnabled()) {
             repairables.addAll(CustomToolConfig.getInstance().getLoadedRepairables());
@@ -375,6 +385,12 @@ public class mcMMO extends JavaPlugin {
         repairables.addAll(rManager.getLoadedRepairables());
         repairableManager = new SimpleRepairableManager(repairables.size());
         repairableManager.registerRepairables(repairables);
+
+        // Load salvage configs, make manager and register them at this time
+        SalvageConfigManager sManager = new SalvageConfigManager(this);
+        salvageables.addAll(sManager.getLoadedSalvageables());
+        salvageableManager = new SimpleSalvageableManager(salvageables.size());
+        salvageableManager.registerSalvageables(salvageables);
     }
 
     private void registerEvents() {

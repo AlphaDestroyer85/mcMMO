@@ -1,12 +1,11 @@
-package com.gmail.nossr50.skills.repair.repairables;
+package com.gmail.nossr50.skills.salvage.salvageables;
 
 import org.bukkit.Material;
 
 import com.gmail.nossr50.datatypes.RepairAndSalvageItemType;
 import com.gmail.nossr50.datatypes.RepairAndSalvageMaterialType;
 
-
-public interface Repairable {
+public interface Salvageable {
     /**
      * Gets the type of this repairable item
      *
@@ -19,28 +18,28 @@ public interface Repairable {
      *
      * @return the id of the repair material
      */
-    public Material getRepairMaterial();
+    public Material getSalvageMaterial();
 
     /**
      * Gets the metadata byte value of the material used to repair this item
      *
      * @return the byte metadata of the repair material
      */
-    public byte getRepairMaterialMetadata();
+    public byte getSalvageMaterialMetadata();
 
     /**
      * Gets the RepairItemType value for this repairable item
      *
      * @return the RepairItemType for this repairable
      */
-    public RepairAndSalvageItemType getRepairItemType();
+    public RepairAndSalvageItemType getSalvageItemType();
 
     /**
      * Gets the RepairMaterialType value for this repairable item
      *
      * @return the RepairMaterialType for this repairable
      */
-    public RepairAndSalvageMaterialType getRepairMaterialType();
+    public RepairAndSalvageMaterialType getSalvageMaterialType();
 
     /**
      * Gets the minimum quantity of repair materials ignoring all other repair bonuses
@@ -65,7 +64,7 @@ public interface Repairable {
      *
      * @return the base repair durability
      */
-    public short getBaseRepairDurability();
+    public short getBaseSalvageDurability();
 
     /**
      * Gets the minimum repair level needed to repair this item
