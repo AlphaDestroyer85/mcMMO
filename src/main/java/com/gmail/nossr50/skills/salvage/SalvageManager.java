@@ -89,11 +89,10 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        Material salvageMaterial = salvageable.getSalvageMaterial();
         byte salvageMaterialMetadata = salvageable.getSalvageMaterialMetadata();
         int baseSalvageAmount = SkillUtils.getRepairAndSalvageQuantities(item, salvageable.getSalvageMaterial(), (byte) -1);
 
-        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageMaterial.getMaxDurability(), baseSalvageAmount);
+        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), baseSalvageAmount);
 
         if (salvageableAmount == 0) {
             player.sendMessage(LocaleLoader.getString("Salvage.Skills.TooDamaged"));
@@ -116,7 +115,7 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        Misc.dropItems(location, new MaterialData(salvageMaterial, salvageMaterialMetadata).toItemStack(1), salvageableAmount);
+        Misc.dropItems(location, new MaterialData(salvageable.getSalvageMaterial(), salvageMaterialMetadata).toItemStack(salvageableAmount), 1);
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
